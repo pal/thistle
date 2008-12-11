@@ -1,0 +1,24 @@
+Test: Verify Google's title (variation 1)
+Start at http://www.google.com/ncr
+Check that the title is "Google"
+
+Test: Verify Google's title (variation 2)
+Navigate to http://www.google.com/ncr
+Make sure the title is "Google"
+
+Test: Verify Google's title (variation 3)
+Go to http://www.google.com/ncr
+Make sure title equals "Google"
+
+Test: Verify Google's title (variation 4)
+go to http://www.google.com/ncr
+check title is "Google"
+
+Test: Verify Google's title (variation 5)
+go to http://www.google.com/ncr
+check the title is "Google"
+
+Test: Verify Google's title (variation 5)
+navigate to http://www.google.com/ncr
+check that the title is "Google"
+

@@ -1,0 +1,7 @@
+Test: Verify Google.com's title 
+Navigate to http://www.google.com/ncr
+Verify that the title is "Google"
+
+Test: Verify DN.se's title 
+Navigate to http://www.dn.se/
+Verify that the title is "DN - Nyheter - Sveriges bästa dagstidning på nätet"
