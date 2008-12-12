@@ -42,7 +42,9 @@ public class SimpleFileBasedTest {
 		List<Command> commandList = scenario.getCommands();
 		assertThat(commandList.size(), is(2));
 		Command cmd = commandList.get(0);
-		assertNotNull(cmd);
+		assertThat(cmd.getType(), equalTo(Command.Type.NAVIGATE_TO));
+		cmd = commandList.get(1);
+		assertThat(cmd.getType(), equalTo(Command.Type.VERIFY_ELEMENT));
 	}
 
 	@Test
@@ -51,13 +53,15 @@ public class SimpleFileBasedTest {
 		List<Scenario> scenarioList = parser.parse(new File(file));
 		assertThat(scenarioList.size(), is(1));
 		Scenario scenario = scenarioList.get(0);
-		List<Command> commandList = scenario.getCommands();
 		assertEquals(scenario.getTitle(),
 				"Verify Google's title (Using test descriptions)");
 
+		List<Command> commandList = scenario.getCommands();
 		assertThat(commandList.size(), is(2));
 		Command cmd = commandList.get(0);
-		assertNotNull(cmd);
+		assertThat(cmd.getType(), equalTo(Command.Type.NAVIGATE_TO));
+		cmd = commandList.get(1);
+		assertThat(cmd.getType(), equalTo(Command.Type.VERIFY_ELEMENT));
 	}
 
 	// TestStatus status = runner.run(commandList);

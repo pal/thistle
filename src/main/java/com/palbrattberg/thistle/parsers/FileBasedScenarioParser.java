@@ -70,6 +70,17 @@ public class FileBasedScenarioParser extends ScenarioParser<File> {
 	}
 
 	private Command parseCommand(String nextLine) {
-		return new Command();
+		Command cmd = null;
+		
+		Pattern cmdNavigateTo = Pattern.compile("Navigate to\\s+(.*)");
+		Matcher matcher = cmdNavigateTo.matcher(nextLine);
+
+		if (matcher.find()) {
+			cmd = new Command(Command.Type.NAVIGATE_TO);
+		} else {
+			cmd = new Command(Command.Type.VERIFY_ELEMENT);
+		}
+		
+		return cmd;
 	}
 }
