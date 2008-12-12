@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.*;
 import java.io.File;
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,6 +30,11 @@ public class SimpleFileBasedTest {
 		runner = new SeleniumRunner();
 		parser = new FileBasedScenarioParser();
 	}
+	
+	@After
+	public void tearDown(){
+		runner.close();
+	}
 
 	@Test
 	public void testcase_000() {
@@ -45,6 +51,10 @@ public class SimpleFileBasedTest {
 		assertThat(cmd.getType(), equalTo(Command.Type.NAVIGATE_TO));
 		cmd = commandList.get(1);
 		assertThat(cmd.getType(), equalTo(Command.Type.VERIFY_ELEMENT));
+		
+		TestStatus status = runner.run(commandList);
+		assertTrue(status.allTestsPass());
+		assertThat(status.getNumberOfVerifications(), is(1));
 	}
 
 	@Test
@@ -62,6 +72,31 @@ public class SimpleFileBasedTest {
 		assertThat(cmd.getType(), equalTo(Command.Type.NAVIGATE_TO));
 		cmd = commandList.get(1);
 		assertThat(cmd.getType(), equalTo(Command.Type.VERIFY_ELEMENT));
+		
+
+		TestStatus status = runner.run(commandList);
+		assertTrue(status.allTestsPass());
+		assertThat(status.getNumberOfVerifications(), is(1));
+	}
+	
+	@Test
+	public void testcase_002() {
+		String file = "src/test/thistle/basic-features/test1-check-google-title-failing.thistle";
+		List<Scenario> scenarioList = parser.parse(new File(file));
+		assertThat(scenarioList.size(), is(1));
+		Scenario scenario = scenarioList.get(0);
+		
+
+		List<Command> commandList = scenario.getCommands();
+		assertThat(commandList.size(), is(2));
+		Command cmd = commandList.get(0);
+		assertThat(cmd.getType(), equalTo(Command.Type.NAVIGATE_TO));
+		cmd = commandList.get(1);
+		assertThat(cmd.getType(), equalTo(Command.Type.VERIFY_ELEMENT));
+		
+		TestStatus status = runner.run(commandList);
+		assertFalse(status.allTestsPass());
+		assertThat(status.getNumberOfVerifications(), is(1));
 	}
 
 	// TestStatus status = runner.run(commandList);

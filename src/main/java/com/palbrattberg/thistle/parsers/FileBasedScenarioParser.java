@@ -8,11 +8,17 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.palbrattberg.thistle.Command;
 import com.palbrattberg.thistle.Scenario;
 import com.palbrattberg.thistle.ScenarioParser;
+import com.palbrattberg.thistle.runners.selenium.SeleniumRunner;
 
 public class FileBasedScenarioParser extends ScenarioParser<File> {
+
+	final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Override
 	public List<Scenario> parse(File input) {
@@ -71,16 +77,31 @@ public class FileBasedScenarioParser extends ScenarioParser<File> {
 
 	private Command parseCommand(String nextLine) {
 		Command cmd = null;
-		
-		Pattern cmdNavigateTo = Pattern.compile("Navigate to\\s+(.*)");
-		Matcher matcher = cmdNavigateTo.matcher(nextLine);
 
-		if (matcher.find()) {
+		Pattern cmdNavigateTo = Pattern.compile("Navigate to\\s+(.*)");
+		Pattern cmdVerify = Pattern
+				.compile("Verify\\s+(?:that)?\\s?+(?:the)?\\s?+(title)\\s?+is\\s?+(not)?\\s?+\"(.*)\"");
+		Matcher cmdNavigateToMatcher = cmdNavigateTo.matcher(nextLine);
+
+		if (cmdNavigateToMatcher.find()) {
 			cmd = new Command(Command.Type.NAVIGATE_TO);
+			cmd.setProperty("url", cmdNavigateToMatcher.group(1));
 		} else {
-			cmd = new Command(Command.Type.VERIFY_ELEMENT);
+			Matcher cmdVerifyMatcher = cmdVerify.matcher(nextLine);
+			if (cmdVerifyMatcher.find()) {
+				cmd = new Command(Command.Type.VERIFY_ELEMENT);
+				cmd.setProperty("locator", cmdVerifyMatcher.group(1));
+				cmd.setProperty("should_match", !"not"
+						.equalsIgnoreCase(cmdVerifyMatcher.group(2)));
+				cmd.setProperty("expected_value", cmdVerifyMatcher.group(3));
+			} else {
+				String err = String.format("Couldn't parse input: '%s'",
+						nextLine);
+				logger.error(err);
+				throw new IllegalArgumentException(err);
+			}
 		}
-		
+
 		return cmd;
 	}
 }

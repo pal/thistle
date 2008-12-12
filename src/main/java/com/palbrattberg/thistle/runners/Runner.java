@@ -7,4 +7,6 @@ import com.palbrattberg.thistle.TestStatus;
 
 public interface Runner {
 	TestStatus run(List<Command> commandList);
+
+	void close();
 }

@@ -3,8 +3,11 @@ package com.palbrattberg.thistle;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Scenario {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+public class Scenario {
+	final Logger logger = LoggerFactory.getLogger(this.getClass());
 	private List<Command> commandList = new ArrayList<Command>();
 	private String title = "file: basic-features/test1-check-google-title.thistle, test 1";
 
