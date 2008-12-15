@@ -1,5 +1,8 @@
 package com.palbrattberg.thistle.runners.selenium;
 
+import java.util.List;
+
+import org.mortbay.util.MultiException;
 import org.openqa.selenium.server.SeleniumServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +23,7 @@ public class SeleniumServerControl {
 
 	protected SeleniumServerControl() {
 	}
-
+	
 	public void startSeleniumServer() {
 		if (server == null) {
 			try {
@@ -34,6 +37,12 @@ public class SeleniumServerControl {
 			server.start();
 		} catch (Exception e) {
 			logger.error("Could not start Selenium Server", e);
+			if (e instanceof MultiException) {
+				MultiException multiEx = (MultiException) e;
+				for (Exception ex : ((List<Exception>) multiEx.getExceptions())) {
+					logger.warn("MultiException", ex);
+				}
+			}
 		}
 	}
 

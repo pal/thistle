@@ -14,7 +14,8 @@ import com.thoughtworks.selenium.DefaultSelenium;
 public class SeleniumRunner implements Runner {
 	final Logger logger = LoggerFactory.getLogger(this.getClass());
 	protected DefaultSelenium selenium;
-	protected boolean started = false;
+	protected boolean serverStarted = false;
+	protected boolean browserStarted = false;
 	protected String host = "localhost";
 	protected int port = SeleniumServer.DEFAULT_PORT;
 	protected String browser = "*iehta";
@@ -24,48 +25,41 @@ public class SeleniumRunner implements Runner {
 		seleniumServer = SeleniumServerControl.getInstance();
 		try {
 			seleniumServer.startSeleniumServer();
+			serverStarted = true;
 		} catch (Exception e) {
 			throw new RuntimeException("Couldn't start selenium server!", e);
 		}
-
 	}
 
 	public void close() {
-		try {
-			selenium.stop();
-		} catch (Exception e) {
-			logger.warn("Got error when stopping selenium browser handle", e);
+		if (browserStarted) {
+			try {
+				selenium.stop();
+			} catch (Exception e) {
+				logger.warn("Got error when stopping selenium browser handle",
+						e);
+				// throw new RuntimeException(e);
+			}
+			browserStarted = false;
 		}
-
-		started = false;
 	}
 
 	@Override
 	protected void finalize() throws Throwable {
 		close();
 		seleniumServer.stopSeleniumServer();
+		serverStarted = false;
 		super.finalize();
 	}
 
 	public void initialize(String url) {
-		if (!started) {
+		if (!browserStarted) {
 			logger.debug("Starting Selenium runner at {}", url);
 			selenium = new DefaultSelenium(host, port, browser, url);
 			selenium.start();
-			started = true;
+			browserStarted = true;
 		}
 	}
-
-	//
-	// public void testHelloWorld() throws Exception {
-	// try {
-	// selenium.open("http://localhost:8080/mywebapp/index.jsp");
-	// ;
-	// } catch (SeleniumException ex) {
-	// fail(ex.getMessage());
-	// throw ex;
-	// }
-	// }
 
 	public TestStatus run(final List<Command> commandList) {
 		TestStatus status = new TestStatus();
