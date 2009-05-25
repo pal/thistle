@@ -6,47 +6,52 @@
 
 # Thistle API for cucumber
 
+require 'thistle_class.rb'
+
+# register actions
+#World(Thistle)
+
 # NAVIGATION
 When /^(?:I )?(?:visit|navigate to|go to|browse) (.+)$/ do |page|
-  Thistle::Thistle.visit(page)
+  visit(page)
 end
 
 # CLICKING
 When /^(?:I )?(?:click|press|choose) (?:the )?(?:\")?(.+?)(?:\")?(?: button)?$/ do |locator|
- Thistle::Thistle.click(locator)
+ click(locator)
 end
 
 # ENTERING DATA
 When /^(?:I )?(?:enter|type|insert) (?:\")?(.+)(?:\")? (?:in the field|in|into|in the) (?:\")?([^\"]*?)(?:\")?(?: field)?$/ do |text, locator|
-  Thistle::Thistle.enter_text(text, locator)
+  enter_text(text, locator)
 end
 
 Given /^(?:I )?(?:enter|type|insert)(?: the following):$/ do |input_table|
   input_table.raw.each do |row|
-    Thistle::Thistle.enter_text(row[1], row[0])
+    enter_text(row[1], row[0])
   end
 end
 
 # CONVIENIENCE MATCHER (version 2.0 stuff!)
 Given /^(?:I )?login as "([^\"]*)" \/ "([^\"]*)"$/ do |username, password|
-  Thistle::Thistle.login(username, password)
+  login(username, password)
 end
 
 # check for matching title / refactor for any element
 Then /^(?:the )?(?:\")?([^\"]*)(?:\")? should (?:be|equal) (?:\")?([^\"]*)(?:\")?$/ do |locator, expected_value|
-  Thistle::Thistle.check_locator_value(locator, expected_value)
+  check_locator_value(locator, expected_value)
 end
 
 Then /^(?:the )?([^\"]*) should (?:match) ([^\"]*)$/ do |locator, regex_pattern|
-  Thistle::Thistle.match_locator_value(locator, regex_pattern)
+  match_locator_value(locator, regex_pattern)
 end
 
 Then /^(?:I )?should see (?:the text )?(?:\")?([^\"]*)(?:\")?$/ do |expected_text|
-  Thistle::Thistle.check_for_text(expected_text)
+  check_for_text(expected_text)
 end
 
 Then /^(?:I )?should not see (?:the text )?(?:\")?([^\"]*)(?:\")?$/ do |expected_text|
-  Thistle::Thistle.check_for_text(expected_text, false)
+  check_for_text(expected_text, false)
 end
 
 
