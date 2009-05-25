@@ -1,4 +1,4 @@
 1. Install ruby
-2. gem install cucumber webrat
+2. gem install rspec cucumber webrat thistle
 3. cucumber features/running.feature
-4. read the files in features/
+4. read the files in features/ to see what's going on
