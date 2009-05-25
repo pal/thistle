@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.date = %q{2009-05-25}
   s.description = %q{Thistle is a language- and framework agnostic vocabulary for testing web sites.}
   s.email = %q{brattberg@gmail.com}
-  s.files = ["README", "cucumber/README", "features/incubator.feature", "features/running.feature", "features/steps/thistle_steps.rb", "features/support/env.rb"]
+  s.files = ["README", "cucumber/README", "cucumber/features/incubator.feature", "cucumber/features/running.feature", "cucumber/features/steps/thistle_steps.rb", "cucumber/features/support/env.rb"]
   s.has_rdoc = true
   s.homepage = %q{http://github.com/pal/thistle}
   s.rdoc_options = ["--inline-source", "--charset=UTF-8"]

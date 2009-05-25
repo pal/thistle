@@ -14,7 +14,7 @@ Feature: Up and coming features
     Given I visit http://example-app.appspot.com/
     And I click "Log in"
     And I enter the following:
-      | Username | testuser@mydomain.com |
+      | Email | testuser@mydomain.com |
       | Password  | It's secret dude! |
     When I click the "Log in" button
     Then I should see the text "Welcome testuser@mydomain.com!"

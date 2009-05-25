@@ -12,13 +12,19 @@ When /^(?:I )?(?:visit|navigate to|go to|browse) (.+)$/ do |page|
 end
 
 # CLICKING
-When /^(?:I )?(?:click|press|choose) (?:the )?(?:\")?(.+)(?:\")?(?: button)?$/ do |locator|
+When /^(?:I )?(?:click|press|choose) (?:the )?(?:\")?(.+?)(?:\")?(?: button)?$/ do |locator|
  Thistle::Thistle.click(locator)
 end
 
 # ENTERING DATA
 When /^(?:I )?(?:enter|type|insert) (?:\")?(.+)(?:\")? (?:in the field|in|into|in the) (?:\")?([^\"]*?)(?:\")?(?: field)?$/ do |text, locator|
   Thistle::Thistle.enter_text(text, locator)
+end
+
+Given /^(?:I )?(?:enter|type|insert)(?: the following):$/ do |input_table|
+  input_table.raw.each do |row|
+    Thistle::Thistle.enter_text(row[1], row[0])
+  end
 end
 
 # CONVIENIENCE MATCHER (version 2.0 stuff!)

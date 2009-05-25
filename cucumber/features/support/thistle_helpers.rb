@@ -10,6 +10,9 @@ module Thistle
     require 'spec/expectations'
     include Spec::Matchers
     
+    require 'webrat'
+    include Webrat::Locators
+    
     @path_to = {
       "the home page" => "/"
     }
@@ -23,21 +26,46 @@ module Thistle
     def self.click (locator) 
       #@browser.button(:value, locator).click # celerity
       # refactor me!
+=begin
+      if  @@webrat_session.find_button(locator) != nil
+        puts "Found button #{locator}"
+      elsif  @@webrat_session.find_link(locator) != nil
+        puts "Found link #{locator}"
+      else
+        puts "Nothing found to click"
+      end
+=end
+      
       begin
         @@webrat_session.click_button locator
       rescue
         #else
         begin
-          @@webrat_session.click_link locator
+          @@webrat_session.click_link /#{Regexp.escape(locator)}/
         rescue
-          raise "Cannot find #{locator}!"
+          $stderr.puts $!.inspect
+          raise "Cannot find #{locator}"
         end
-        #end
+        end
       end
     end
     
     def self.enter_text (text, locator) 
       #@browser.text_field(:name, locator).set(text) # celerity
+      
+      # todo add FieldPrependedByLocator to webrat
+      
+      puts "Looking for field #{locator}"
+      
+      
+      if  @@webrat_session.field(locator) != nil
+        puts "Found field #{locator} as field"
+      elsif  Webrat::XML.attribute(field_element, "id") =~ /#{Regexp.escape(locator)}/
+        puts "Found field #{locator} by regex"
+      #end
+      
+      
+      # use FieldLabeledLocator as well?
       @@webrat_session.fill_in locator, :with => text
     end
     
