@@ -1,4 +1,9 @@
-1. Install ruby
-2. gem install rspec cucumber webrat thistle
-3. cucumber features/running.feature
-4. read the files in features/ to see what's going on
+1. Install ruby (and add to PATH)
+2. gem install rspec cucumber webrat thistle 
+3. (if on windows) 
+  a. gem install win32console
+  b. chcp 1252 
+    (for more info: see https://rspec.lighthouseapp.com/projects/16211-cucumber/tickets/81 
+      and http://codesnippets.joyent.com/posts/show/414)
+4. cucumber features/running.feature
+5. read the files in features/ to see what's going on
